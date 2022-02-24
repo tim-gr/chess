@@ -1,3 +1,8 @@
+.gradle
+/build/
+!gradle-wrapper.jar
+.gradletasknamecache
+
 # Compiled class file
 *.class
 
