@@ -2,10 +2,10 @@ package model.intern.chessboard;
 
 import model.intern.chessmove.Move;
 import model.intern.chessmove.MovePath;
-import model.common.EnumChessColor;
+import model.intern.common.EnumChessColor;
 import model.intern.exceptions.*;
-import model.common.Coordinates;
-import model.common.EnumKingThreat;
+import model.intern.common.Coordinates;
+import model.intern.common.EnumKingThreat;
 import model.intern.chesspieces.*;
 
 import java.util.*;

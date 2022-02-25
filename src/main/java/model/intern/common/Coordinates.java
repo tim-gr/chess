@@ -1,4 +1,4 @@
-package model.common;
+package model.intern.common;
 
 /**
  * Coordinates, consisting of (x|y).

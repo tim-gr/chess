@@ -1,4 +1,4 @@
-package model.common;
+package model.intern.common;
 
 /**
  * Enumeration of available types of chess pieces.

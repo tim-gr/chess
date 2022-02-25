@@ -1,4 +1,4 @@
-package model.common;
+package model.intern.common;
 
 /**
  * Enumeration of the available chess color BLACK and WHITE.

@@ -1,8 +1,8 @@
 package model.intern.chessboard;
 
 import model.intern.chesspieces.*;
-import model.common.Coordinates;
-import model.common.EnumChessColor;
+import model.intern.common.Coordinates;
+import model.intern.common.EnumChessColor;
 
 /**
  * This class knows about the starting position of all chess pieces.

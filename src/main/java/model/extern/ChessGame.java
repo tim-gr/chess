@@ -1,11 +1,11 @@
 package model.extern;
 
-import model.common.EnumChessColor;
-import model.common.EnumChessPiece;
-import model.common.EnumKingThreat;
+import model.intern.common.EnumChessColor;
+import model.intern.common.EnumChessPiece;
+import model.intern.common.EnumKingThreat;
 import model.intern.chessboard.ChessBoard;
 import model.intern.chessboard.ChessField;
-import model.common.Coordinates;
+import model.intern.common.Coordinates;
 import model.intern.exceptions.ExcInvalidMove;
 
 import java.util.List;

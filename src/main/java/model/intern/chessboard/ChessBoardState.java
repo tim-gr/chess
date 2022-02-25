@@ -1,8 +1,8 @@
 package model.intern.chessboard;
 
 import model.intern.chessmove.Move;
-import model.common.EnumChessColor;
-import model.common.EnumKingThreat;
+import model.intern.common.EnumChessColor;
+import model.intern.common.EnumKingThreat;
 
 import java.util.ArrayList;
 import java.util.HashMap;

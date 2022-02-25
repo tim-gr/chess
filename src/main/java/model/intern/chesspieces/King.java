@@ -1,12 +1,12 @@
 package model.intern.chesspieces;
 
-import model.common.EnumChessPiece;
+import model.intern.common.EnumChessPiece;
 import model.intern.chessboard.ChessBoard;
 import model.intern.chessboard.ChessField;
 import model.intern.chessmove.Move;
 import model.intern.chessmove.MoveValidationResult;
-import model.common.Coordinates;
-import model.common.EnumChessColor;
+import model.intern.common.Coordinates;
+import model.intern.common.EnumChessColor;
 import model.intern.chessmove.EnumMovePath;
 
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package model.common;
+package model.intern.common;
 
 /**
  * Enumeration of the possible threat situations of a king.
