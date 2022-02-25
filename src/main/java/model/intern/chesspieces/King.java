@@ -2,11 +2,11 @@ package model.intern.chesspieces;
 
 import model.intern.chessboard.ChessBoard;
 import model.intern.chessboard.ChessField;
-import model.intern.chessboard.Move;
-import model.intern.chessboard.move.MoveValidationResult;
+import model.intern.chessmove.Move;
+import model.intern.chessmove.MoveValidationResult;
 import model.intern.common.Coordinates;
 import model.intern.common.EnumChessColor;
-import model.intern.common.EnumMovePath;
+import model.intern.chessmove.EnumMovePath;
 
 public class King extends ChessPiece {
 

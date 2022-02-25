@@ -1,4 +1,4 @@
-package model.intern.chessboard.move;
+package model.intern.chessmove;
 
 public enum EnumValidationResult {
 

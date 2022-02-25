@@ -1,10 +1,8 @@
-package model.intern.chessboard.move;
-
-import model.intern.chessboard.Move;
+package model.intern.chessmove;
 
 public class MoveValidationResult {
 
-    private EnumValidationResult validationResult;
+    private final EnumValidationResult validationResult;
     private Move subMove;
 
     public MoveValidationResult(boolean moveValid) {

@@ -1,6 +1,6 @@
-package model.intern.chessboard;
+package model.intern.chessmove;
 
-import model.intern.common.EnumMovePath;
+import model.intern.chessboard.ChessField;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class MovePath {
         this.fieldsOnPath.add(0, possibleField);
     }
 
-    ChessField getLastFieldOfPath() {
+    public ChessField getLastFieldOfPath() {
         if (this.fieldsOnPath.isEmpty()) {
             return null;
         } else {

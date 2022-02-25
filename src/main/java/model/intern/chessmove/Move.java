@@ -1,8 +1,9 @@
-package model.intern.chessboard;
+package model.intern.chessmove;
 
-import model.intern.chessboard.move.MoveValidationResult;
-import model.intern.common.EnumMovePath;
+import model.intern.chessboard.ChessBoard;
+import model.intern.chessboard.ChessField;
 import model.intern.chesspieces.ChessPiece;
+import model.intern.exceptions.ExcMoveAlreadyExecuted;
 import model.intern.exceptions.ExcNoValidTarget;
 
 public class Move {
@@ -14,6 +15,9 @@ public class Move {
 
     private MoveValidationResult moveValidationResult;
 
+    /**
+     * Standard move from fieldSource to fieldTarget
+     */
     public Move(ChessField fieldSource, ChessField fieldTarget) {
         this.fieldSource = fieldSource;
         this.fieldTarget = fieldTarget;
@@ -21,8 +25,12 @@ public class Move {
         this.pieceTarget = fieldTarget.getPiece();
     }
 
+    /**
+     * Special move for setting piece on fieldTarget without having a source field.
+     * This is useful for pawn promotion.
+     */
     public Move(ChessField fieldTarget, ChessPiece piece) {
-        this.fieldSource = null;
+        this.fieldSource = fieldTarget;
         this.fieldTarget = fieldTarget;
         this.pieceSource = piece;
         this.pieceTarget = null;
@@ -45,6 +53,11 @@ public class Move {
     }
 
     public void execute(ChessBoard board) throws ExcNoValidTarget {
+
+        if (this.moveValidationResult != null) {
+            throw new ExcMoveAlreadyExecuted();
+        }
+
         this.moveValidationResult = validate(board);
 
         switch (moveValidationResult.getValidationResult()) {

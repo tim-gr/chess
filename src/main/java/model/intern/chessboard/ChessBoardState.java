@@ -1,5 +1,6 @@
 package model.intern.chessboard;
 
+import model.intern.chessmove.Move;
 import model.intern.common.EnumChessColor;
 import model.intern.common.EnumKingThreat;
 
@@ -22,6 +23,7 @@ public class ChessBoardState {
         this.kingThreat = EnumKingThreat.NO_THREAT;
         this.moves = new ArrayList<>();
     }
+
 
     boolean hasTurn(EnumChessColor color) {
         return this.activeColor == color;
@@ -62,7 +64,7 @@ public class ChessBoardState {
         return this.moves.get(this.moves.size() - 1);
     }
 
-    void addMoveToHistory(Move move) {
+    public void addMoveToHistory(Move move) {
         this.moves.add(move);
     }
 

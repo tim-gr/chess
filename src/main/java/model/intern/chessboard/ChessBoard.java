@@ -1,13 +1,14 @@
 package model.intern.chessboard;
 
+import model.intern.chessmove.Move;
+import model.intern.chessmove.MovePath;
+import model.intern.common.EnumChessColor;
 import model.intern.exceptions.*;
 import model.intern.common.Coordinates;
-import model.intern.common.EnumChessColor;
 import model.intern.common.EnumKingThreat;
 import model.intern.chesspieces.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ChessBoard extends Observable implements Observer {
 
@@ -27,20 +28,49 @@ public class ChessBoard extends Observable implements Observer {
     private void initializeChessFields() {
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
-                this.chessFields[x][y] = new ChessField(x, y);
+                this.chessFields[x][y] = new ChessField(x, y, this);
                 this.chessFields[x][y].addObserver(this);
             }
         }
     }
 
+    /**
+     * Sets all necessary pieces of a chess board on their starting positions.
+     * The current positions of the kings are tracked by the board state.
+     */
+    public void initChessPieces() {
+        ChessPieceCreator.getInstance().initChessPieces(this);
+        this.boardState.changeFieldOfKing(EnumChessColor.WHITE, this.getField(4,0));
+        this.boardState.changeFieldOfKing(EnumChessColor.BLACK, this.getField(4,7));
+    }
+
+    /**
+     * Return the field on the board based on the given coordinates, wrapped in a Coordinates object.
+     */
     public ChessField getField(Coordinates coordinates) {
         return getField(coordinates.x(), coordinates.y());
     }
 
+    /**
+     * Return the field on the board based on the given coordinates.
+     * x and y must be inside the interval of [0,7] - including borders.
+     */
     public ChessField getField(int x, int y) {
-        return this.chessFields[x][y];
+        if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT) {
+            return this.chessFields[x][y];
+        } else {
+            throw new IllegalArgumentException("Invalid coordinates: (" + x + "," + y + ")");
+        }
     }
 
+    /**
+     * Execute a move of the piece being on the source field to the target field.
+     * If there is no piece of the right color on the source field or the move is not legal/possible,
+     * an ExcInvalidMove occurs.
+     * @param source Source of the move
+     * @param target Target of the move
+     * @throws ExcInvalidMove The move is not a valid chess move or the situation on the board does not allow it.
+     */
     public void executeMove(Coordinates source, Coordinates target) throws ExcInvalidMove {
         ChessField fieldSource = this.getField(source);
         ChessField fieldTarget = this.getField(target);
@@ -61,7 +91,7 @@ public class ChessBoard extends Observable implements Observer {
         if (kingThreat != EnumKingThreat.NO_THREAT) {
             // Invalid move, as the king of the active player is now / still checked.
             revertLastMove();
-            throw new ExcKingChecked();
+            throw new ExcKingChecked(kingThreat);
         }
 
         // The king of the active player is not checked. Therefore, everything is ok and the active player changes.
@@ -70,23 +100,28 @@ public class ChessBoard extends Observable implements Observer {
         this.boardState.setKingThreat(kingThreatNewActivePlayer);
     }
 
+    /**
+     * Returns whether the king is threatened and to which degree (check or checkmate).
+     * @param fieldKing Field of the king that is analysed regarding who he is threatened
+     */
     EnumKingThreat detectKingThreat(ChessField fieldKing) {
-        List<MovePath> threateningMovePaths = fieldKing.findThreateningMoveDirections(this, fieldKing.getPiece().getColor());
+        List<MovePath> threateningMovePaths = fieldKing.findThreateningMoveDirections(fieldKing.getPiece().getColor());
 
         if (threateningMovePaths.isEmpty()) {
             // King is not threatened.
             return EnumKingThreat.NO_THREAT;
-        } else if (fieldKing.findPossibleNewFields(this).stream()
-                .anyMatch(possibleNewField -> possibleNewField.findThreateningMoveDirections(this, fieldKing.getPiece().getColor()).isEmpty())) {
+        } else if (fieldKing.findPossibleNewFields().stream()
+                .anyMatch(possibleNewField ->
+                        this.getField(possibleNewField).findThreateningMoveDirections(fieldKing.getPiece().getColor()).isEmpty())) {
             // King is checked but can move to another field that is not threatened.
             return EnumKingThreat.CHECK;
         } else if (threateningMovePaths.size() == 1
                 && canOwnPieceBeUsedForKingProtection(fieldKing, threateningMovePaths.get(0))) {
             // King is checked and cannot move to another field.
-            // However, there is only one threat that can be stopped by another own piece.
+            // However, there is only one threat, and it can be stopped by another own piece.
             return EnumKingThreat.CHECK;
         } else {
-            // King is checkmate, as no possibilities could be found to escape from the threat.
+            // King is checkmate, as no possibilities can be found to escape from the threat.
             return EnumKingThreat.CHECKMATE;
         }
     }
@@ -97,7 +132,7 @@ public class ChessBoard extends Observable implements Observer {
      */
     boolean canOwnPieceBeUsedForKingProtection(ChessField fieldKing, MovePath threateningMovePath) {
         for (ChessField chessField : threateningMovePath.getFieldsOnPath()) {
-            List<MovePath> moveDirectionsOwnPieces = chessField.findThreateningMoveDirections(this, fieldKing.getPiece().getColor());
+            List<MovePath> moveDirectionsOwnPieces = chessField.findThreateningMoveDirections(fieldKing.getPiece().getColor());
             for (MovePath movePath : moveDirectionsOwnPieces) {
                 // The king cannot be protected by himself.
                 if (!movePath.getLastFieldOfPath().getCoordinates().equals(fieldKing.getCoordinates())) {
@@ -108,74 +143,47 @@ public class ChessBoard extends Observable implements Observer {
         return false;
     }
 
+    /**
+     * Reverts the last move, if there has been one.
+     */
     public void revertLastMove() {
         Move moveToBeReverted = this.boardState.removeMoveFromHistory();
-        // Check whether there is any move to revert.
         if (moveToBeReverted != null) {
             moveToBeReverted.revertMove();
             this.boardState.setActiveColor(moveToBeReverted.getPieceSource().getColor());
         }
     }
 
-    public List<Coordinates> findPossibleNewFields(Coordinates coordinatesSource) {
-        List<ChessField> possibleNewFields = this.getField(coordinatesSource).findPossibleNewFields(this);
-        return possibleNewFields.stream()
-                .map(ChessField::getCoordinates)
-                .collect(Collectors.toList());
+    /**
+     * Returns the color of the active player.
+     */
+    public EnumChessColor getActiveColor() {
+        return this.boardState.getActiveColor();
     }
 
-    public List<Coordinates> findThreateningFields(Coordinates coordinatesSource) {
-        List<MovePath> threateningMovePaths =
-                this.getField(coordinatesSource).findThreateningMoveDirections(this, this.boardState.getActiveColor());
-        return threateningMovePaths.stream()
-                .map(threateningMovePath -> threateningMovePath.getLastFieldOfPath().getCoordinates())
-                .collect(Collectors.toList());
+    /**
+     * Returns the last move on this chess board.
+     */
+    public Move getLastMove() {
+        return this.boardState.getLastMove();
     }
 
-    public void initChessPieces() {
-        this.getField(new Coordinates(0,0)).setPiece(new Rook(EnumChessColor.WHITE));
-        this.getField(new Coordinates(1,0)).setPiece(new Knight(EnumChessColor.WHITE));
-        this.getField(new Coordinates(2,0)).setPiece(new Bishop(EnumChessColor.WHITE));
-        this.getField(new Coordinates(3,0)).setPiece(new Queen(EnumChessColor.WHITE));
-        this.getField(new Coordinates(4,0)).setPiece(new King(EnumChessColor.WHITE));
-        this.getField(new Coordinates(5,0)).setPiece(new Bishop(EnumChessColor.WHITE));
-        this.getField(new Coordinates(6,0)).setPiece(new Knight(EnumChessColor.WHITE));
-        this.getField(new Coordinates(7,0)).setPiece(new Rook(EnumChessColor.WHITE));
-
-        for (int x = 0; x < WIDTH; x++) {
-            this.getField(new Coordinates(x,1)).setPiece(new Pawn(EnumChessColor.WHITE));
-        }
-
-        for (int x = 0; x < WIDTH; x++) {
-            this.getField(new Coordinates(x,6)).setPiece(new Pawn(EnumChessColor.BLACK));
-        }
-
-        this.getField(new Coordinates(0,7)).setPiece(new Rook(EnumChessColor.BLACK));
-        this.getField(new Coordinates(1,7)).setPiece(new Knight(EnumChessColor.BLACK));
-        this.getField(new Coordinates(2,7)).setPiece(new Bishop(EnumChessColor.BLACK));
-        this.getField(new Coordinates(3,7)).setPiece(new Queen(EnumChessColor.BLACK));
-        this.getField(new Coordinates(4,7)).setPiece(new King(EnumChessColor.BLACK));
-        this.getField(new Coordinates(5,7)).setPiece(new Bishop(EnumChessColor.BLACK));
-        this.getField(new Coordinates(6,7)).setPiece(new Knight(EnumChessColor.BLACK));
-        this.getField(new Coordinates(7,7)).setPiece(new Rook(EnumChessColor.BLACK));
-
-        this.boardState.changeFieldOfKing(EnumChessColor.WHITE, this.getField(new Coordinates(4,0)));
-        this.boardState.changeFieldOfKing(EnumChessColor.BLACK, this.getField(new Coordinates(4,7)));
+    /**
+     * Update the current field of the king of the active player.
+     */
+    public void changeFieldOfKing(ChessField field) {
+        this.boardState.changeFieldOfKing(field);
     }
 
-    public ChessBoardState getBoardState() {
-        return this.boardState;
+    /**
+     * Adds the given move to the move history.
+     */
+    public void addMoveToHistory(Move move) {
+        this.boardState.addMoveToHistory(move);
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        if (arg instanceof ChessField) {
-            ChessField changedChessField = (ChessField) arg;
-            if (changedChessField.hasPiece() && changedChessField.getPiece() instanceof King) {
-                this.boardState.changeFieldOfKing(changedChessField);
-            }
-            System.out.println(changedChessField.getCoordinates().x() + ", " + changedChessField.getCoordinates().y());
-        }
         this.setChanged();
         notifyObservers(arg);
     }

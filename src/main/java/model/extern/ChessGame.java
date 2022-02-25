@@ -4,6 +4,7 @@ import model.intern.chessboard.ChessBoard;
 import model.intern.chessboard.ChessField;
 import model.intern.common.Coordinates;
 import model.intern.exceptions.ExcInvalidMove;
+import model.intern.exceptions.ExcMoveAlreadyExecuted;
 
 import java.util.List;
 import java.util.Observable;
@@ -37,20 +38,20 @@ public class ChessGame extends Observable implements Observer {
     public void executeMove(ExtCoordinates source, ExtCoordinates target) {
         try {
             this.getChessBoard().executeMove(source.getCoordinates(), target.getCoordinates());
-        } catch (ExcInvalidMove e) {
+        } catch (ExcInvalidMove | ExcMoveAlreadyExecuted e) {
             e.printStackTrace();
         }
     }
 
     public List<ExtCoordinates> findPossibleNewFields(ExtCoordinates coordinatesSource) {
-        List<Coordinates> listCoordinates = this.getChessBoard().findPossibleNewFields(coordinatesSource.getCoordinates());
+        List<Coordinates> listCoordinates = this.getChessBoard().getField(coordinatesSource.getCoordinates()).findPossibleNewFields();
         return listCoordinates.stream()
                 .map(coordinates -> new ExtCoordinates(coordinates.x(), coordinates.y()))
                 .collect(Collectors.toList());
     }
 
     public List<ExtCoordinates> findThreateningFields(ExtCoordinates coordinatesSource) {
-        List<Coordinates> listCoordinates = this.getChessBoard().findThreateningFields(coordinatesSource.getCoordinates());
+        List<Coordinates> listCoordinates = this.getChessBoard().getField(coordinatesSource.getCoordinates()).findThreateningFields();
         return listCoordinates.stream()
                 .map(coordinates -> new ExtCoordinates(coordinates.x(), coordinates.y()))
                 .collect(Collectors.toList());

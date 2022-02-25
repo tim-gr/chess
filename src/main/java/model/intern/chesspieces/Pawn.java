@@ -2,10 +2,10 @@ package model.intern.chesspieces;
 
 import model.intern.chessboard.ChessBoard;
 import model.intern.chessboard.ChessField;
-import model.intern.chessboard.Move;
-import model.intern.chessboard.move.MoveValidationResult;
+import model.intern.chessmove.Move;
+import model.intern.chessmove.MoveValidationResult;
 import model.intern.common.EnumChessColor;
-import model.intern.common.EnumMovePath;
+import model.intern.chessmove.EnumMovePath;
 
 public class Pawn extends ChessPiece {
 
@@ -25,7 +25,7 @@ public class Pawn extends ChessPiece {
                 && (isOneStepForward(deltaY) || (!this.hasMoved() && isTwoStepsForward(deltaY)))
                 && (deltaX == 0 && target.getPiece() == null
                         || Math.abs(deltaX) == 1 && target.getPiece() != null && target.getPiece().getColor() != source.getPiece().getColor()
-                        || Math.abs(deltaX) == 1 && isEnPassantPossible(board.getBoardState().getLastMove(), source));
+                        || Math.abs(deltaX) == 1 && isEnPassantPossible(board.getLastMove(), source));
 
         if (moveValid &&
                 (this.getColor() == EnumChessColor.BLACK && target.getCoordinates().y() == 0)

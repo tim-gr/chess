@@ -1,7 +1,8 @@
-package model.intern.chessboard;
+package model.intern.chessmove;
 
+import model.intern.chessboard.ChessBoard;
+import model.intern.chessboard.ChessField;
 import model.intern.common.Coordinates;
-import model.intern.common.EnumMovePath;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,7 +16,7 @@ public class MovePathCreator {
     private static MovePathCreator movePathCreator;
     private MovePathCreator(){}
 
-    static MovePathCreator getInstance() {
+    public static MovePathCreator getInstance() {
         if (movePathCreator == null) {
             movePathCreator = new MovePathCreator();
         }
@@ -62,8 +63,9 @@ public class MovePathCreator {
         return movePath;
     }
 
-    List<MovePath> findAllMovePaths(ChessBoard board, Coordinates source) {
+    public List<MovePath> findAllMovePaths(ChessBoard board, Coordinates source, boolean considerPiece) {
         List<MovePath> movePaths = new ArrayList<>();
+        // TODO Check for piece and search only for relevant move paths
         movePaths.addAll(findAllLinearMovePaths(board, source));
         movePaths.addAll(findAllDiagonalMovePaths(board, source));
         movePaths.addAll(findAllJumpMovePaths(board, source));

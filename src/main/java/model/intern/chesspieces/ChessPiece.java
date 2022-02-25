@@ -1,10 +1,10 @@
 package model.intern.chesspieces;
 
 import model.intern.chessboard.ChessBoard;
-import model.intern.chessboard.Move;
-import model.intern.chessboard.move.MoveValidationResult;
+import model.intern.chessmove.Move;
+import model.intern.chessmove.MoveValidationResult;
 import model.intern.common.EnumChessColor;
-import model.intern.common.EnumMovePath;
+import model.intern.chessmove.EnumMovePath;
 
 public abstract class ChessPiece {
 
@@ -27,6 +27,7 @@ public abstract class ChessPiece {
         this.numberOfMoves--;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean hasMoved() {
         return this.numberOfMoves > 0;
     }

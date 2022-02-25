@@ -1,4 +1,4 @@
-package model.intern.common;
+package model.intern.chessmove;
 
 public enum EnumMovePath {
 

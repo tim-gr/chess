@@ -1,11 +1,14 @@
-package model.intern.chessboard;
+package model.intern.chessmove;
 
-import static model.intern.chessboard.move.EnumValidationResult.*;
+import static model.intern.chessmove.EnumValidationResult.*;
 
-import model.intern.chessboard.move.MoveValidationResult;
+import model.intern.chessboard.ChessBoard;
+import model.intern.chessboard.ChessField;
 import model.intern.chesspieces.*;
 import model.intern.common.Coordinates;
 import model.intern.common.EnumChessColor;
+import model.intern.chessmove.Move;
+import model.intern.chessmove.MoveValidationResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -75,7 +78,7 @@ public class TestValidateMove {
             otherPawnInitialField.setPiece(new Pawn(EnumChessColor.BLACK));
             ChessField otherPawnCurrentField = chessBoard.getField(1, 4);
             otherPawnCurrentField.setPiece(new Pawn(EnumChessColor.BLACK));
-            chessBoard.getBoardState().addMoveToHistory(new Move(otherPawnInitialField, otherPawnCurrentField));
+            chessBoard.addMoveToHistory(new Move(otherPawnInitialField, otherPawnCurrentField));
             otherPawnInitialField.setPiece(null);
 
             Move move = new Move(source, target);
@@ -205,7 +208,7 @@ public class TestValidateMove {
             otherPawnInitialField.setPiece(new Pawn(EnumChessColor.BLACK));
             ChessField otherPawnCurrentField = chessBoard.getField(1, 4);
             otherPawnCurrentField.setPiece(new Pawn(EnumChessColor.BLACK));
-            chessBoard.getBoardState().addMoveToHistory(new Move(otherPawnInitialField, otherPawnCurrentField));
+            chessBoard.addMoveToHistory(new Move(otherPawnInitialField, otherPawnCurrentField));
             otherPawnInitialField.setPiece(null);
 
             Move move = new Move(source, target);

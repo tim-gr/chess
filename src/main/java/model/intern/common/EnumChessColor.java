@@ -4,7 +4,7 @@ public enum EnumChessColor {
 
     BLACK("B"), WHITE("W");
 
-    private String shortName;
+    private final String shortName;
 
     EnumChessColor(String shortName) {
         this.shortName = shortName;
