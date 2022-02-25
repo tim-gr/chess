@@ -21,11 +21,12 @@ public class ChessGame extends Observable implements Observer {
     private ChessBoard chessBoard;
 
     /**
-     * Start or restart a chess game. If there is current progress, this is lost when (re)starting the game.
+     * Starts or restarts a chess game. If there is current progress, this is lost when (re)starting the game.
+     * The board state is returned with information about the current player.
      * @param observer Register an observer to stay updated about all piece changes on chess fields.
      *                 The update will be of type ExtFieldUpdate.
      */
-    public void startNewGame(Observer observer) {
+    public ExtBoardState startNewGame(Observer observer) {
         if (this.chessBoard != null) {
             // Clean up old observers
             this.chessBoard.deleteObservers();
@@ -39,6 +40,8 @@ public class ChessGame extends Observable implements Observer {
         this.chessBoard.addObserver(this);
 
         this.chessBoard.initChessPieces();
+
+        return createExtBoardState();
     }
 
     /**
@@ -49,9 +52,7 @@ public class ChessGame extends Observable implements Observer {
      */
     public ExtBoardState executeMove(Coordinates source, Coordinates target) throws ExcInvalidMove {
         this.getChessBoard().executeMove(source, target);
-        EnumChessColor activeColor = this.getChessBoard().getActiveColor();
-        EnumKingThreat kingThreat = this.getChessBoard().getKingThreat();
-        return new ExtBoardState(activeColor, kingThreat);
+        return createExtBoardState();
     }
 
     /**
@@ -84,6 +85,12 @@ public class ChessGame extends Observable implements Observer {
         }
     }
 
+    private ExtBoardState createExtBoardState() {
+        EnumChessColor activeColor = this.getChessBoard().getActiveColor();
+        EnumKingThreat kingThreat = this.getChessBoard().getKingThreat();
+        return new ExtBoardState(activeColor, kingThreat);
+    }
+
     @Override
     public void update(Observable o, Object arg) {
         if (arg instanceof ChessField) {
@@ -94,7 +101,7 @@ public class ChessGame extends Observable implements Observer {
             ExtFieldUpdate fieldUpdate = new ExtFieldUpdate(coordinates, piece, color);
             System.out.println(changedChessField.getCoordinates().x() + ", " + changedChessField.getCoordinates().y());
             setChanged();
-            notifyObservers();
+            notifyObservers(fieldUpdate);
         }
     }
 
