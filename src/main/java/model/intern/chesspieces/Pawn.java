@@ -1,10 +1,11 @@
 package model.intern.chesspieces;
 
+import model.common.EnumChessPiece;
 import model.intern.chessboard.ChessBoard;
 import model.intern.chessboard.ChessField;
 import model.intern.chessmove.Move;
 import model.intern.chessmove.MoveValidationResult;
-import model.intern.common.EnumChessColor;
+import model.common.EnumChessColor;
 import model.intern.chessmove.EnumMovePath;
 
 import java.util.Arrays;
@@ -23,6 +24,7 @@ public class Pawn extends ChessPiece {
         int deltaX = target.getCoordinates().x() - source.getCoordinates().x();
         int deltaY = target.getCoordinates().y() - source.getCoordinates().y();
 
+        // Normal validation
         boolean moveValid =
                 movePath != EnumMovePath.JUMP
                 && (isOneStepForward(deltaY) || (!this.hasMoved() && isTwoStepsForward(deltaY)))
@@ -30,6 +32,7 @@ public class Pawn extends ChessPiece {
                         || Math.abs(deltaX) == 1 && target.getPiece() != null && target.getPiece().getColor() != source.getPiece().getColor()
                         || Math.abs(deltaX) == 1 && isEnPassantPossible(board.getLastMove(), source));
 
+        // Check pawn promotion
         if (moveValid &&
                 (this.getColor() == EnumChessColor.BLACK && target.getCoordinates().y() == 0)
                 || (this.getColor() == EnumChessColor.WHITE && target.getCoordinates().y() == 7)) {
@@ -82,6 +85,11 @@ public class Pawn extends ChessPiece {
     @Override
     public boolean canMoveToThreatenedField() {
         return true;
+    }
+
+    @Override
+    public EnumChessPiece getPieceType() {
+        return EnumChessPiece.PAWN;
     }
 
     @Override

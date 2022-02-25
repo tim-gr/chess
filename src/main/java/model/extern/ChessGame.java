@@ -1,27 +1,33 @@
 package model.extern;
 
+import model.common.EnumChessColor;
+import model.common.EnumChessPiece;
+import model.common.EnumKingThreat;
 import model.intern.chessboard.ChessBoard;
 import model.intern.chessboard.ChessField;
-import model.intern.common.Coordinates;
+import model.common.Coordinates;
 import model.intern.exceptions.ExcInvalidMove;
-import model.intern.exceptions.ExcMoveAlreadyExecuted;
 
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.stream.Collectors;
 
+/**
+ * Facade for interacting with the chess model.
+ * This is the only class that is allowed to be accessed by clients.
+ */
 public class ChessGame extends Observable implements Observer {
 
     private ChessBoard chessBoard;
 
-    public void startNewGame() {
-        startNewGame(null);
-    }
-
+    /**
+     * Start or restart a chess game. If there is current progress, this is lost when (re)starting the game.
+     * @param observer Register an observer to stay updated about all piece changes on chess fields.
+     *                 The update will be of type ExtFieldUpdate.
+     */
     public void startNewGame(Observer observer) {
         if (this.chessBoard != null) {
-            // Cleanup old observers
+            // Clean up old observers
             this.chessBoard.deleteObservers();
         }
 
@@ -35,28 +41,37 @@ public class ChessGame extends Observable implements Observer {
         this.chessBoard.initChessPieces();
     }
 
-    public void executeMove(ExtCoordinates source, ExtCoordinates target) {
-        try {
-            this.getChessBoard().executeMove(source.getCoordinates(), target.getCoordinates());
-        } catch (ExcInvalidMove | ExcMoveAlreadyExecuted e) {
-            e.printStackTrace();
-        }
+    /**
+     * Executes the given move. The status of the board is returned after executing the move.
+     * @param source Source field of the move
+     * @param target Target field of the move
+     * @throws ExcInvalidMove The given move is not allowed on the current board.
+     */
+    public ExtBoardState executeMove(Coordinates source, Coordinates target) throws ExcInvalidMove {
+        this.getChessBoard().executeMove(source, target);
+        EnumChessColor activeColor = this.getChessBoard().getActiveColor();
+        EnumKingThreat kingThreat = this.getChessBoard().getKingThreat();
+        return new ExtBoardState(activeColor, kingThreat);
     }
 
-    public List<ExtCoordinates> findPossibleNewFields(ExtCoordinates coordinatesSource) {
-        List<Coordinates> listCoordinates = this.getChessBoard().getField(coordinatesSource.getCoordinates()).findPossibleNewFields();
-        return listCoordinates.stream()
-                .map(coordinates -> new ExtCoordinates(coordinates.x(), coordinates.y()))
-                .collect(Collectors.toList());
+    /**
+     * Returns all possible fields that are reachable by one move, based on the given coordinates
+     */
+    public List<Coordinates> findPossibleNewFields(Coordinates coordinatesSource) {
+        return this.getChessBoard().getField(coordinatesSource).findPossibleNewFields();
     }
 
-    public List<ExtCoordinates> findThreateningFields(ExtCoordinates coordinatesSource) {
-        List<Coordinates> listCoordinates = this.getChessBoard().getField(coordinatesSource.getCoordinates()).findThreateningFields();
-        return listCoordinates.stream()
-                .map(coordinates -> new ExtCoordinates(coordinates.x(), coordinates.y()))
-                .collect(Collectors.toList());
+    /**
+     * Returns all fields that are threatening the field given by the coordinates.
+     */
+    public List<Coordinates> findThreateningFields(Coordinates coordinatesTarget) {
+        return this.getChessBoard().getField(coordinatesTarget).findThreateningFields();
     }
 
+    /**
+     * Revert all effects from the last move.
+     * This method can be called several times in a row.
+     */
     public void revertLastMove() {
         this.getChessBoard().revertLastMove();
     }
@@ -73,7 +88,13 @@ public class ChessGame extends Observable implements Observer {
     public void update(Observable o, Object arg) {
         if (arg instanceof ChessField) {
             ChessField changedChessField = (ChessField) arg;
+            Coordinates coordinates = changedChessField.getCoordinates();
+            EnumChessPiece piece = changedChessField.getPiece().getPieceType();
+            EnumChessColor color = changedChessField.getPiece().getColor();
+            ExtFieldUpdate fieldUpdate = new ExtFieldUpdate(coordinates, piece, color);
             System.out.println(changedChessField.getCoordinates().x() + ", " + changedChessField.getCoordinates().y());
+            setChanged();
+            notifyObservers();
         }
     }
 

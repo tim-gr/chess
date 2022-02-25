@@ -5,8 +5,8 @@ import model.intern.chessmove.MovePath;
 import model.intern.chessmove.MovePathCreator;
 import model.intern.chessmove.MoveValidationResult;
 import model.intern.chesspieces.King;
-import model.intern.common.Coordinates;
-import model.intern.common.EnumChessColor;
+import model.common.Coordinates;
+import model.common.EnumChessColor;
 import model.intern.chesspieces.ChessPiece;
 
 import java.util.ArrayList;

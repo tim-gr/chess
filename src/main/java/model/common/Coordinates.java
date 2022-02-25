@@ -1,12 +1,15 @@
-package model.intern.common;
+package model.common;
 
+/**
+ * Coordinates, consisting of (x|y).
+ */
 public class Coordinates {
 
     private final int x;
     private final int y;
 
     public Coordinates(int x, int y) {
-        if (x > -1 && x < 8 && y > -1 && y < 8) { // -1 is used for an imaginary field for pawn promotion.
+        if (x >= 0 && x < 8 && y >= 0 && y < 8) {
             this.x = x;
             this.y = y;
         } else {

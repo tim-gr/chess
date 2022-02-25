@@ -1,8 +1,8 @@
 package model.intern.chessboard;
 
 import model.intern.chessmove.Move;
-import model.intern.common.EnumChessColor;
-import model.intern.common.EnumKingThreat;
+import model.common.EnumChessColor;
+import model.common.EnumKingThreat;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,7 +14,7 @@ import java.util.Map;
  * like whose turn it is and where the kings are currently positioned.
  * Only a chess board is allowed to use this class.
  */
-class ChessBoardState {
+public class ChessBoardState {
 
     private EnumChessColor activeColor;
     private final Map<EnumChessColor, ChessField> fieldsOfKings;
@@ -42,8 +42,12 @@ class ChessBoardState {
         this.activeColor = this.activeColor.getOtherColor();
     }
 
-    EnumChessColor getActiveColor() {
+    public EnumChessColor getActiveColor() {
         return this.activeColor;
+    }
+
+    public EnumKingThreat getKingThreat() {
+        return kingThreat;
     }
 
     void setKingThreat(EnumKingThreat kingThreat) {

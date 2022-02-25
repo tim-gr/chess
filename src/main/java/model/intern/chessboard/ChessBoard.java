@@ -2,10 +2,10 @@ package model.intern.chessboard;
 
 import model.intern.chessmove.Move;
 import model.intern.chessmove.MovePath;
-import model.intern.common.EnumChessColor;
+import model.common.EnumChessColor;
 import model.intern.exceptions.*;
-import model.intern.common.Coordinates;
-import model.intern.common.EnumKingThreat;
+import model.common.Coordinates;
+import model.common.EnumKingThreat;
 import model.intern.chesspieces.*;
 
 import java.util.*;
@@ -79,12 +79,12 @@ public class ChessBoard extends Observable implements Observer {
         ChessField fieldSource = this.getField(source);
         ChessField fieldTarget = this.getField(target);
 
-        if (!this.boardState.hasTurn(fieldSource.getPiece().getColor())) {
-            throw new ExcDoesNotHaveTurn();
-        }
-
         if (!fieldSource.hasPiece()) {
             throw new ExcNoValidSource();
+        }
+
+        if (!this.boardState.hasTurn(fieldSource.getPiece().getColor())) {
+            throw new ExcDoesNotHaveTurn();
         }
 
         Move move = new Move(fieldSource, fieldTarget);
@@ -163,6 +163,13 @@ public class ChessBoard extends Observable implements Observer {
      */
     public EnumChessColor getActiveColor() {
         return this.boardState.getActiveColor();
+    }
+
+    /**
+     * Returns how and to which degree the king is threatened.
+     */
+    public EnumKingThreat getKingThreat() {
+        return this.boardState.getKingThreat();
     }
 
     /**

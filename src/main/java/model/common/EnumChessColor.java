@@ -1,5 +1,8 @@
-package model.intern.common;
+package model.common;
 
+/**
+ * Enumeration of the available chess color BLACK and WHITE.
+ */
 public enum EnumChessColor {
 
     BLACK("B"), WHITE("W");
@@ -10,6 +13,9 @@ public enum EnumChessColor {
         this.shortName = shortName;
     }
 
+    /**
+     * Returns the other color (BLACK -> WHITE / WHITE -> BLACK).
+     */
     public EnumChessColor getOtherColor() {
         if (this == BLACK) {
             return WHITE;
