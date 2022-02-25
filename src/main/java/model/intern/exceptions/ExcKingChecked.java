@@ -1,6 +1,6 @@
 package model.intern.exceptions;
 
-import model.intern.common.EnumKingThreat;
+import model.common.EnumKingThreat;
 
 /**
  * Exception: The king is checked after this move. Therefore, the move is invalid.

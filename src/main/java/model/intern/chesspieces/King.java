@@ -1,12 +1,12 @@
 package model.intern.chesspieces;
 
-import model.intern.common.EnumChessPiece;
+import model.common.EnumChessPiece;
 import model.intern.chessboard.ChessBoard;
 import model.intern.chessboard.ChessField;
 import model.intern.chessmove.Move;
 import model.intern.chessmove.MoveValidationResult;
-import model.intern.common.Coordinates;
-import model.intern.common.EnumChessColor;
+import model.common.Coordinates;
+import model.common.EnumChessColor;
 import model.intern.chessmove.EnumMovePath;
 
 import java.util.Arrays;
@@ -38,8 +38,8 @@ public class King extends ChessPiece {
         // Normal validation
         return new MoveValidationResult(
                 movePath != EnumMovePath.JUMP
-                && (deltaX == 0 || deltaX == 1)
-                && (deltaY == 0 || deltaY == 1));
+                && (deltaX == 0 || Math.abs(deltaX) == 1)
+                && (deltaY == 0 || Math.abs(deltaY) == 1));
     }
 
     @Override

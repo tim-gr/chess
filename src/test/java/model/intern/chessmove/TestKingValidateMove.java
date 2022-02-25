@@ -3,16 +3,16 @@ package model.intern.chessmove;
 import model.intern.chessboard.ChessBoard;
 import model.intern.chessboard.ChessField;
 import model.intern.chesspieces.King;
+import model.intern.chesspieces.Knight;
 import model.intern.chesspieces.Rook;
-import model.intern.common.Coordinates;
-import model.intern.common.EnumChessColor;
+import model.common.Coordinates;
+import model.common.EnumChessColor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static model.intern.chessmove.EnumValidationResult.INVALID;
-import static model.intern.chessmove.EnumValidationResult.VALID_WITH_SUB_MOVE;
+import static model.intern.chessmove.EnumValidationResult.*;
 
 public class TestKingValidateMove {
 
@@ -25,6 +25,46 @@ public class TestKingValidateMove {
 
     @Nested
     class TestKingValidMoves {
+
+        @Test
+        public void testKingLinearHorizontalNegativeDelta() {
+            ChessField source = chessBoard.getField(1, 1);
+            ChessField target = chessBoard.getField(0, 1);
+            source.setPiece(new King(EnumChessColor.WHITE));
+
+            Move move = new Move(source, target);
+            Assertions.assertEquals(VALID, move.validate(chessBoard).getValidationResult());
+        }
+
+        @Test
+        public void testKingLinearHorizontalPositiveDelta() {
+            ChessField source = chessBoard.getField(1, 1);
+            ChessField target = chessBoard.getField(2, 1);
+            source.setPiece(new King(EnumChessColor.WHITE));
+
+            Move move = new Move(source, target);
+            Assertions.assertEquals(VALID, move.validate(chessBoard).getValidationResult());
+        }
+
+        @Test
+        public void testKingLinearVerticalNegativeDelta() {
+            ChessField source = chessBoard.getField(1, 1);
+            ChessField target = chessBoard.getField(1, 0);
+            source.setPiece(new King(EnumChessColor.WHITE));
+
+            Move move = new Move(source, target);
+            Assertions.assertEquals(VALID, move.validate(chessBoard).getValidationResult());
+        }
+
+        @Test
+        public void testKingLinearVerticalPositiveDelta() {
+            ChessField source = chessBoard.getField(1, 1);
+            ChessField target = chessBoard.getField(1, 2);
+            source.setPiece(new King(EnumChessColor.WHITE));
+
+            Move move = new Move(source, target);
+            Assertions.assertEquals(VALID, move.validate(chessBoard).getValidationResult());
+        }
 
         @Test
         public void testKingCastleRight() {

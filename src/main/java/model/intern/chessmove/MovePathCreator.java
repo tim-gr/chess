@@ -2,7 +2,7 @@ package model.intern.chessmove;
 
 import model.intern.chessboard.ChessBoard;
 import model.intern.chessboard.ChessField;
-import model.intern.common.Coordinates;
+import model.common.Coordinates;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,7 +1,7 @@
 package model.extern;
 
-import model.intern.common.EnumChessColor;
-import model.intern.common.EnumKingThreat;
+import model.common.EnumChessColor;
+import model.common.EnumKingThreat;
 
 public class ExtBoardState {
 

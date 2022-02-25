@@ -5,8 +5,8 @@ import model.intern.chessmove.MovePath;
 import model.intern.chessmove.MovePathCreator;
 import model.intern.chessmove.MoveValidationResult;
 import model.intern.chesspieces.King;
-import model.intern.common.Coordinates;
-import model.intern.common.EnumChessColor;
+import model.common.Coordinates;
+import model.common.EnumChessColor;
 import model.intern.chesspieces.ChessPiece;
 
 import java.util.ArrayList;
@@ -75,8 +75,8 @@ public class ChessField extends Observable {
      * Returns the coordinates of all fields that this field. This means that there is an opponent piece
      * on the returned coordinates which is able to reach this field with one move.
      */
-    public List<Coordinates> findThreateningFields() {
-        List<MovePath> threateningMovePaths = this.findThreateningMoveDirections(this.board.getActiveColor());
+    public List<Coordinates> findThreateningFields(EnumChessColor activeColor) {
+        List<MovePath> threateningMovePaths = this.findThreateningMoveDirections(activeColor);
         return threateningMovePaths.stream()
                 .map(threateningMovePath -> threateningMovePath.getLastFieldOfPath().getCoordinates())
                 .collect(Collectors.toList());

@@ -1,11 +1,11 @@
 package model.extern;
 
-import model.intern.common.EnumChessColor;
-import model.intern.common.EnumChessPiece;
-import model.intern.common.EnumKingThreat;
+import model.common.EnumChessColor;
+import model.common.EnumChessPiece;
+import model.common.EnumKingThreat;
 import model.intern.chessboard.ChessBoard;
 import model.intern.chessboard.ChessField;
-import model.intern.common.Coordinates;
+import model.common.Coordinates;
 import model.intern.exceptions.ExcInvalidMove;
 
 import java.util.List;
@@ -65,7 +65,7 @@ public class ChessGame extends Observable implements Observer {
      * Returns all fields that are threatening the field given by the coordinates.
      */
     public List<Coordinates> findThreateningFields(Coordinates coordinatesTarget) {
-        return this.getChessBoard().getField(coordinatesTarget).findThreateningFields();
+        return this.getChessBoard().getField(coordinatesTarget).findThreateningFields(this.getChessBoard().getActiveColor());
     }
 
     /**

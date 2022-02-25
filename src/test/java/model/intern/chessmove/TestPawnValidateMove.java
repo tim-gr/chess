@@ -5,7 +5,7 @@ import static model.intern.chessmove.EnumValidationResult.*;
 import model.intern.chessboard.ChessBoard;
 import model.intern.chessboard.ChessField;
 import model.intern.chesspieces.*;
-import model.intern.common.EnumChessColor;
+import model.common.EnumChessColor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;

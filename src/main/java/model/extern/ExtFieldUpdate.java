@@ -1,8 +1,8 @@
 package model.extern;
 
-import model.intern.common.Coordinates;
-import model.intern.common.EnumChessColor;
-import model.intern.common.EnumChessPiece;
+import model.common.Coordinates;
+import model.common.EnumChessColor;
+import model.common.EnumChessPiece;
 
 /**
  * Information about an update of a field regarding its piece.
