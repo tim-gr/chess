@@ -8,6 +8,9 @@ import model.intern.common.Coordinates;
 import model.intern.common.EnumChessColor;
 import model.intern.chessmove.EnumMovePath;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class King extends ChessPiece {
 
     public King(EnumChessColor color) {
@@ -41,6 +44,11 @@ public class King extends ChessPiece {
     @Override
     public boolean canMoveToThreatenedField() {
         return false;
+    }
+
+    @Override
+    public List<EnumMovePath> getValidMovePaths() {
+        return Arrays.asList(EnumMovePath.LINEAR, EnumMovePath.DIAGONAL);
     }
 
     @Override

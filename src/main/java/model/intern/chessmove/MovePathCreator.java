@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This class has the knowledge of how to create valid move paths.
+ */
 public class MovePathCreator {
 
     private static final int MIN_FIELD = 0;
@@ -23,10 +26,22 @@ public class MovePathCreator {
         return movePathCreator;
     }
 
+    /**
+     * Returns a move path with all reachable fields on it,
+     * based on the source field, the move tendency (deltaX, deltaY) and the move direction.
+     */
     MovePath createMovePathStraight(ChessBoard board, Coordinates source, int deltaX, int deltaY, EnumMovePath direction) {
 
-        // deltaX and deltaY need to be -1 or +1.
-        // To make it easier for the caller, higher values can be given. However, only the tendency is considered.
+        if (direction == EnumMovePath.JUMP) {
+            throw new IllegalArgumentException("A jump movement is not a straight path.");
+        }
+
+        if (deltaX == 0 && deltaY == 0) {
+            throw new IllegalArgumentException("A move path needs a tendency given by deltaX and deltaY. At least one value has to be != 0.");
+        }
+
+        // The implementation needs a tendency in which the move path is going.
+        // Therefore, deltaX and deltaY are always transformed into -1 and +1, when the given value is != 0.
         deltaX = deltaX == 0 ? deltaX : deltaX / Math.abs(deltaX);
         deltaY = deltaY == 0 ? deltaY : deltaY / Math.abs(deltaY);
 
@@ -49,7 +64,16 @@ public class MovePathCreator {
         return movePath;
     }
 
+    /**
+     * Returns a move path of type jump with one possible field.
+     * Both deltaX and deltaY have to be != 0.
+     */
     MovePath createMovePathJump(ChessBoard board, Coordinates source, int deltaX, int deltaY) {
+
+        if (deltaX == 0 || deltaY == 0) {
+            throw new IllegalArgumentException("A jump move path needs both deltaX and deltaY being != 0.");
+        }
+
         MovePath movePath = new MovePath(EnumMovePath.JUMP);
 
         int x = source.x() + deltaX;
@@ -63,12 +87,30 @@ public class MovePathCreator {
         return movePath;
     }
 
-    public List<MovePath> findAllMovePaths(ChessBoard board, Coordinates source, boolean considerPiece) {
+    /**
+     * Returns all possible move paths from the source field (given by coordinates).
+     * When the piece on the field is supposed to be considered as well, it has to be given as true.
+     */
+    public List<MovePath> findAllMovePaths(ChessBoard board, ChessField field, boolean considerPiece) {
+
+        List<EnumMovePath> allowedMovePaths = new ArrayList<>();
+        if (considerPiece && field.hasPiece()) {
+            allowedMovePaths = field.getPiece().getValidMovePaths();
+        }
+        if (!considerPiece) {
+            allowedMovePaths = Arrays.asList(EnumMovePath.values());
+        }
+
         List<MovePath> movePaths = new ArrayList<>();
-        // TODO Check for piece and search only for relevant move paths
-        movePaths.addAll(findAllLinearMovePaths(board, source));
-        movePaths.addAll(findAllDiagonalMovePaths(board, source));
-        movePaths.addAll(findAllJumpMovePaths(board, source));
+        if (allowedMovePaths.contains(EnumMovePath.LINEAR)) {
+            movePaths.addAll(findAllLinearMovePaths(board, field.getCoordinates()));
+        }
+        if (allowedMovePaths.contains(EnumMovePath.DIAGONAL)) {
+            movePaths.addAll(findAllDiagonalMovePaths(board, field.getCoordinates()));
+        }
+        if (allowedMovePaths.contains(EnumMovePath.JUMP)) {
+            movePaths.addAll(findAllJumpMovePaths(board, field.getCoordinates()));
+        }
         return movePaths;
     }
 

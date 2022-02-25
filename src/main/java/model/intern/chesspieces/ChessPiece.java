@@ -6,6 +6,8 @@ import model.intern.chessmove.MoveValidationResult;
 import model.intern.common.EnumChessColor;
 import model.intern.chessmove.EnumMovePath;
 
+import java.util.List;
+
 public abstract class ChessPiece {
 
     private final EnumChessColor color;
@@ -35,5 +37,7 @@ public abstract class ChessPiece {
     public abstract MoveValidationResult isMoveValid(EnumMovePath movePath, Move move, ChessBoard board);
 
     public abstract boolean canMoveToThreatenedField();
+
+    public abstract List<EnumMovePath> getValidMovePaths();
 
 }

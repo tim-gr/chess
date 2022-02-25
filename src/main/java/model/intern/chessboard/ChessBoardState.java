@@ -9,14 +9,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ChessBoardState {
+/**
+ * The ChessBoardState keeps track of information
+ * like whose turn it is and where the kings are currently positioned.
+ * Only a chess board is allowed to use this class.
+ */
+class ChessBoardState {
 
     private EnumChessColor activeColor;
     private final Map<EnumChessColor, ChessField> fieldsOfKings;
     private EnumKingThreat kingThreat;
     private final List<Move> moves;
 
-    public ChessBoardState() {
+    ChessBoardState() {
         // The player with the white pieces starts a chess game.
         this.activeColor = EnumChessColor.WHITE;
         this.fieldsOfKings = new HashMap<>();
@@ -57,14 +62,14 @@ public class ChessBoardState {
         return this.fieldsOfKings.get(this.activeColor);
     }
 
-    public Move getLastMove() {
+    Move getLastMove() {
         if (this.moves.isEmpty()) {
             return null;
         }
         return this.moves.get(this.moves.size() - 1);
     }
 
-    public void addMoveToHistory(Move move) {
+    void addMoveToHistory(Move move) {
         this.moves.add(move);
     }
 

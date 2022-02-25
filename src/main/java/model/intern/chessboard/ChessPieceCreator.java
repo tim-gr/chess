@@ -4,14 +4,17 @@ import model.intern.chesspieces.*;
 import model.intern.common.Coordinates;
 import model.intern.common.EnumChessColor;
 
-public class ChessPieceCreator {
+/**
+ * This class knows about the starting position of all chess pieces.
+ */
+class ChessPieceCreator {
 
     private static final int WIDTH = 8;
 
     private static ChessPieceCreator chessBoardCreator;
     private ChessPieceCreator(){}
 
-    public static ChessPieceCreator getInstance() {
+    static ChessPieceCreator getInstance() {
         if (chessBoardCreator == null) {
             chessBoardCreator = new ChessPieceCreator();
         }

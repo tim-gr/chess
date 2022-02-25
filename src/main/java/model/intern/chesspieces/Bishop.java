@@ -6,6 +6,9 @@ import model.intern.chessmove.MoveValidationResult;
 import model.intern.common.EnumChessColor;
 import model.intern.chessmove.EnumMovePath;
 
+import java.util.Collections;
+import java.util.List;
+
 public class Bishop extends ChessPiece {
 
     public Bishop(EnumChessColor color) {
@@ -20,6 +23,11 @@ public class Bishop extends ChessPiece {
     @Override
     public boolean canMoveToThreatenedField() {
         return true;
+    }
+
+    @Override
+    public List<EnumMovePath> getValidMovePaths() {
+        return Collections.singletonList(EnumMovePath.DIAGONAL);
     }
 
     @Override

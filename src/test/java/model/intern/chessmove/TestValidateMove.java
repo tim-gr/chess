@@ -7,8 +7,6 @@ import model.intern.chessboard.ChessField;
 import model.intern.chesspieces.*;
 import model.intern.common.Coordinates;
 import model.intern.common.EnumChessColor;
-import model.intern.chessmove.Move;
-import model.intern.chessmove.MoveValidationResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;

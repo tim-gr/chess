@@ -7,6 +7,9 @@ import model.intern.chessmove.MoveValidationResult;
 import model.intern.common.EnumChessColor;
 import model.intern.chessmove.EnumMovePath;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Pawn extends ChessPiece {
 
     public Pawn(EnumChessColor color) {
@@ -35,6 +38,11 @@ public class Pawn extends ChessPiece {
         }
 
         return new MoveValidationResult(moveValid);
+    }
+
+    @Override
+    public List<EnumMovePath> getValidMovePaths() {
+        return Arrays.asList(EnumMovePath.LINEAR, EnumMovePath.DIAGONAL);
     }
 
     /**

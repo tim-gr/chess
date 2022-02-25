@@ -6,6 +6,11 @@ import model.intern.chesspieces.ChessPiece;
 import model.intern.exceptions.ExcMoveAlreadyExecuted;
 import model.intern.exceptions.ExcNoValidTarget;
 
+/**
+ * A chess move from one chess field to another.
+ * A move can be valid or invalid.
+ * If the move is valid, it is possible that a second move (sub move) is necessary, for example when castling.
+ */
 public class Move {
 
     private final ChessField fieldSource;
@@ -27,10 +32,10 @@ public class Move {
 
     /**
      * Special move for setting piece on fieldTarget without having a source field.
-     * This is useful for pawn promotion.
+     * Only use it for implementing pawn promotion!
      */
     public Move(ChessField fieldTarget, ChessPiece piece) {
-        this.fieldSource = fieldTarget;
+        this.fieldSource = fieldTarget; // On purpose, as sourceField == targetField for a pawn promotion
         this.fieldTarget = fieldTarget;
         this.pieceSource = piece;
         this.pieceTarget = null;
@@ -52,6 +57,9 @@ public class Move {
         return this.pieceTarget;
     }
 
+    /**
+     * Execute this move (having a permanent effect on the given chess board).
+     */
     public void execute(ChessBoard board) throws ExcNoValidTarget {
 
         if (this.moveValidationResult != null) {
@@ -79,6 +87,9 @@ public class Move {
         fieldSource.getPiece().registerExecutedMove();
     }
 
+    /**
+     * Validate this move according to chess move rules.
+     */
     MoveValidationResult validate(ChessBoard board) {
         if (pieceTarget != null && pieceSource.getColor() == pieceTarget.getColor()) {
             return new MoveValidationResult(false);

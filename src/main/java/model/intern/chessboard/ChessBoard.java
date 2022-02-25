@@ -10,6 +10,10 @@ import model.intern.chesspieces.*;
 
 import java.util.*;
 
+/**
+ * A chess board which consists of 64 chess fields and manages
+ * its status in a board state.
+ */
 public class ChessBoard extends Observable implements Observer {
 
     private static final int WIDTH = 8;
