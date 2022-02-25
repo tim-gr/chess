@@ -30,7 +30,9 @@ public class TestPawnValidateMove {
             source.setPiece(new Pawn(EnumChessColor.WHITE));
 
             Move move = new Move(source, target);
-            Assertions.assertEquals(VALID, move.validate(chessBoard).getValidationResult());
+            MoveValidationResult validationResult = move.validate(chessBoard);
+
+            Assertions.assertEquals(VALID, validationResult.getValidationResult());
         }
 
         @Test
@@ -40,7 +42,9 @@ public class TestPawnValidateMove {
             source.setPiece(new Pawn(EnumChessColor.BLACK));
 
             Move move = new Move(source, target);
-            Assertions.assertEquals(VALID, move.validate(chessBoard).getValidationResult());
+            MoveValidationResult validationResult = move.validate(chessBoard);
+
+            Assertions.assertEquals(VALID, validationResult.getValidationResult());
         }
 
         @Test
@@ -50,7 +54,9 @@ public class TestPawnValidateMove {
             source.setPiece(new Pawn(EnumChessColor.WHITE));
 
             Move move = new Move(source, target);
-            Assertions.assertEquals(VALID, move.validate(chessBoard).getValidationResult());
+            MoveValidationResult validationResult = move.validate(chessBoard);
+
+            Assertions.assertEquals(VALID, validationResult.getValidationResult());
         }
 
         @Test
@@ -61,7 +67,9 @@ public class TestPawnValidateMove {
             target.setPiece(new Pawn(EnumChessColor.BLACK));
 
             Move move = new Move(source, target);
-            Assertions.assertEquals(VALID, move.validate(chessBoard).getValidationResult());
+            MoveValidationResult validationResult = move.validate(chessBoard);
+
+            Assertions.assertEquals(VALID, validationResult.getValidationResult());
         }
 
         @Test
@@ -79,7 +87,9 @@ public class TestPawnValidateMove {
             otherPawnInitialField.setPiece(null);
 
             Move move = new Move(source, target);
-            Assertions.assertEquals(VALID, move.validate(chessBoard).getValidationResult());
+            MoveValidationResult validationResult = move.validate(chessBoard);
+
+            Assertions.assertEquals(VALID, validationResult.getValidationResult());
         }
 
         @Test
@@ -89,11 +99,12 @@ public class TestPawnValidateMove {
             source.setPiece(new Pawn(EnumChessColor.WHITE));
 
             Move move = new Move(source, target);
-            MoveValidationResult moveValidationResult = move.validate(chessBoard);
-            Assertions.assertEquals(VALID_WITH_SUB_MOVE, moveValidationResult.getValidationResult());
-            Assertions.assertNotNull(moveValidationResult.getSubMove());
-            Assertions.assertEquals(target, moveValidationResult.getSubMove().getFieldTarget());
-            Assertions.assertTrue(moveValidationResult.getSubMove().getPieceSource() instanceof Queen);
+            MoveValidationResult validationResult = move.validate(chessBoard);
+
+            Assertions.assertEquals(VALID_WITH_SUB_MOVE, validationResult.getValidationResult());
+            Assertions.assertNotNull(validationResult.getSubMove());
+            Assertions.assertEquals(target, validationResult.getSubMove().getFieldTarget());
+            Assertions.assertTrue(validationResult.getSubMove().getPieceSource() instanceof Queen);
         }
     }
 
@@ -108,7 +119,9 @@ public class TestPawnValidateMove {
             source.getPiece().registerExecutedMove();
 
             Move move = new Move(source, target);
-            Assertions.assertEquals(INVALID, move.validate(chessBoard).getValidationResult());
+            MoveValidationResult validationResult = move.validate(chessBoard);
+
+            Assertions.assertEquals(INVALID, validationResult.getValidationResult());
         }
 
         @Test
@@ -118,7 +131,9 @@ public class TestPawnValidateMove {
             source.setPiece(new Pawn(EnumChessColor.WHITE));
 
             Move move = new Move(source, target);
-            Assertions.assertEquals(INVALID, move.validate(chessBoard).getValidationResult());
+            MoveValidationResult validationResult = move.validate(chessBoard);
+
+            Assertions.assertEquals(INVALID, validationResult.getValidationResult());
         }
 
         @Test
@@ -129,7 +144,9 @@ public class TestPawnValidateMove {
             target.setPiece(new Pawn(EnumChessColor.BLACK));
 
             Move move = new Move(source, target);
-            Assertions.assertEquals(INVALID, move.validate(chessBoard).getValidationResult());
+            MoveValidationResult validationResult = move.validate(chessBoard);
+
+            Assertions.assertEquals(INVALID, validationResult.getValidationResult());
         }
 
         @Test
@@ -139,7 +156,9 @@ public class TestPawnValidateMove {
             source.setPiece(new Pawn(EnumChessColor.WHITE));
 
             Move move = new Move(source, target);
-            Assertions.assertEquals(INVALID, move.validate(chessBoard).getValidationResult());
+            MoveValidationResult validationResult = move.validate(chessBoard);
+
+            Assertions.assertEquals(INVALID, validationResult.getValidationResult());
         }
 
         @Test
@@ -150,7 +169,9 @@ public class TestPawnValidateMove {
             target.setPiece(new Pawn(EnumChessColor.WHITE));
 
             Move move = new Move(source, target);
-            Assertions.assertEquals(INVALID, move.validate(chessBoard).getValidationResult());
+            MoveValidationResult validationResult = move.validate(chessBoard);
+
+            Assertions.assertEquals(INVALID, validationResult.getValidationResult());
         }
 
         @Test
@@ -161,7 +182,9 @@ public class TestPawnValidateMove {
             chessBoard.getField(0, 2).setPiece(new Pawn(EnumChessColor.BLACK));
 
             Move move = new Move(source, target);
-            Assertions.assertEquals(INVALID, move.validate(chessBoard).getValidationResult());
+            MoveValidationResult validationResult = move.validate(chessBoard);
+
+            Assertions.assertEquals(INVALID, validationResult.getValidationResult());
         }
 
         @Test
@@ -171,7 +194,9 @@ public class TestPawnValidateMove {
             source.setPiece(new Pawn(EnumChessColor.WHITE));
 
             Move move = new Move(source, target);
-            Assertions.assertEquals(INVALID, move.validate(chessBoard).getValidationResult());
+            MoveValidationResult validationResult = move.validate(chessBoard);
+
+            Assertions.assertEquals(INVALID, validationResult.getValidationResult());
         }
 
         @Test
@@ -181,7 +206,9 @@ public class TestPawnValidateMove {
             source.setPiece(new Pawn(EnumChessColor.WHITE));
 
             Move move = new Move(source, target);
-            Assertions.assertEquals(INVALID, move.validate(chessBoard).getValidationResult());
+            MoveValidationResult validationResult = move.validate(chessBoard);
+
+            Assertions.assertEquals(INVALID, validationResult.getValidationResult());
         }
 
         @Test
@@ -191,7 +218,9 @@ public class TestPawnValidateMove {
             source.setPiece(new Pawn(EnumChessColor.WHITE));
 
             Move move = new Move(source, target);
-            Assertions.assertEquals(INVALID, move.validate(chessBoard).getValidationResult());
+            MoveValidationResult validationResult = move.validate(chessBoard);
+
+            Assertions.assertEquals(INVALID, validationResult.getValidationResult());
         }
 
         @Test
@@ -209,7 +238,9 @@ public class TestPawnValidateMove {
             otherPawnInitialField.setPiece(null);
 
             Move move = new Move(source, target);
-            Assertions.assertEquals(INVALID, move.validate(chessBoard).getValidationResult());
+            MoveValidationResult validationResult = move.validate(chessBoard);
+
+            Assertions.assertEquals(INVALID, validationResult.getValidationResult());
         }
     }
 

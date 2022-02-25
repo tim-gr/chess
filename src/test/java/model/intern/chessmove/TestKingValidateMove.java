@@ -33,7 +33,9 @@ public class TestKingValidateMove {
             source.setPiece(new King(EnumChessColor.WHITE));
 
             Move move = new Move(source, target);
-            Assertions.assertEquals(VALID, move.validate(chessBoard).getValidationResult());
+            MoveValidationResult validationResult = move.validate(chessBoard);
+
+            Assertions.assertEquals(VALID, validationResult.getValidationResult());
         }
 
         @Test
@@ -43,7 +45,9 @@ public class TestKingValidateMove {
             source.setPiece(new King(EnumChessColor.WHITE));
 
             Move move = new Move(source, target);
-            Assertions.assertEquals(VALID, move.validate(chessBoard).getValidationResult());
+            MoveValidationResult validationResult = move.validate(chessBoard);
+
+            Assertions.assertEquals(VALID, validationResult.getValidationResult());
         }
 
         @Test
@@ -53,7 +57,9 @@ public class TestKingValidateMove {
             source.setPiece(new King(EnumChessColor.WHITE));
 
             Move move = new Move(source, target);
-            Assertions.assertEquals(VALID, move.validate(chessBoard).getValidationResult());
+            MoveValidationResult validationResult = move.validate(chessBoard);
+
+            Assertions.assertEquals(VALID, validationResult.getValidationResult());
         }
 
         @Test
@@ -63,7 +69,9 @@ public class TestKingValidateMove {
             source.setPiece(new King(EnumChessColor.WHITE));
 
             Move move = new Move(source, target);
-            Assertions.assertEquals(VALID, move.validate(chessBoard).getValidationResult());
+            MoveValidationResult validationResult = move.validate(chessBoard);
+
+            Assertions.assertEquals(VALID, validationResult.getValidationResult());
         }
 
         @Test
@@ -114,8 +122,9 @@ public class TestKingValidateMove {
             fieldRook.setPiece(new Rook(EnumChessColor.WHITE));
 
             Move move = new Move(source, target);
+            MoveValidationResult validationResult = move.validate(chessBoard);
 
-            Assertions.assertEquals(INVALID, move.validate(chessBoard).getValidationResult());
+            Assertions.assertEquals(INVALID, validationResult.getValidationResult());
         }
 
         @Test
@@ -128,9 +137,11 @@ public class TestKingValidateMove {
             fieldRook.getPiece().registerExecutedMove();
 
             Move move = new Move(source, target);
+            MoveValidationResult validationResult = move.validate(chessBoard);
 
-            Assertions.assertEquals(INVALID, move.validate(chessBoard).getValidationResult());
+            Assertions.assertEquals(INVALID, validationResult.getValidationResult());
         }
+
     }
 
 }

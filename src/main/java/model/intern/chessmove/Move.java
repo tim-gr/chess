@@ -53,10 +53,6 @@ public class Move {
         return this.pieceSource;
     }
 
-    public ChessPiece getPieceTarget() {
-        return this.pieceTarget;
-    }
-
     /**
      * Execute this move (having a permanent effect on the given chess board).
      */
@@ -83,8 +79,8 @@ public class Move {
 
     private void movePieces() {
         fieldSource.removePiece();
-        fieldTarget.setPiece(fieldSource.getPiece());
-        fieldSource.getPiece().registerExecutedMove();
+        fieldTarget.setPiece(pieceSource);
+        pieceSource.registerExecutedMove();
     }
 
     /**
@@ -130,7 +126,7 @@ public class Move {
     }
 
     public void revertMove() {
-        if (moveValidationResult.getSubMove() != null) {
+        if (moveValidationResult != null && moveValidationResult.getSubMove() != null) {
             moveValidationResult.getSubMove().revertMove();
         }
         fieldSource.setPiece(pieceSource);

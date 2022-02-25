@@ -31,7 +31,9 @@ public class TestKnightValidateMove {
             source.setPiece(new Knight(EnumChessColor.WHITE));
 
             Move move = new Move(source, target);
-            Assertions.assertEquals(VALID, move.validate(chessBoard).getValidationResult());
+            MoveValidationResult validationResult = move.validate(chessBoard);
+
+            Assertions.assertEquals(VALID, validationResult.getValidationResult());
         }
     }
 
@@ -45,7 +47,9 @@ public class TestKnightValidateMove {
             source.setPiece(new Knight(EnumChessColor.WHITE));
 
             Move move = new Move(source, target);
-            Assertions.assertEquals(INVALID, move.validate(chessBoard).getValidationResult());
+            MoveValidationResult validationResult = move.validate(chessBoard);
+
+            Assertions.assertEquals(INVALID, validationResult.getValidationResult());
         }
 
         @Test
@@ -55,9 +59,23 @@ public class TestKnightValidateMove {
             source.setPiece(new Knight(EnumChessColor.WHITE));
 
             Move move = new Move(source, target);
+            MoveValidationResult validationResult = move.validate(chessBoard);
 
-            Assertions.assertEquals(INVALID, move.validate(chessBoard).getValidationResult());
+            Assertions.assertEquals(INVALID, validationResult.getValidationResult());
         }
+
+        @Test
+        public void testKnightTooLongL() {
+            ChessField source = chessBoard.getField(1, 0);
+            ChessField target = chessBoard.getField(2, 3);
+            source.setPiece(new Knight(EnumChessColor.WHITE));
+
+            Move move = new Move(source, target);
+            MoveValidationResult validationResult = move.validate(chessBoard);
+
+            Assertions.assertEquals(INVALID, validationResult.getValidationResult());
+        }
+
     }
 
 }
