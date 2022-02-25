@@ -1,9 +1,6 @@
 package model.intern.chessboard;
 
-import model.intern.chesspieces.Bishop;
-import model.intern.chesspieces.King;
-import model.intern.chesspieces.Queen;
-import model.intern.chesspieces.Rook;
+import model.intern.chesspieces.*;
 import model.common.Coordinates;
 import model.common.EnumChessColor;
 import org.junit.jupiter.api.Assertions;
@@ -90,6 +87,32 @@ public class TestFindPossibleNewFields {
         expectedList.add(new Coordinates(3, 3));
         expectedList.add(new Coordinates(3, 5));
         expectedList.add(new Coordinates(5, 3));
+
+        Assertions.assertEquals(expectedList.size(), possibleNewFields.size());
+        assertThat(possibleNewFields, containsInAnyOrder(expectedList.toArray()));
+    }
+
+    /**
+     * Test whether:
+     * - Knight jumps not out of the board
+     * - Does NOT go on a field with a piece of the same color
+     * - Goes on a field with a piece of the other color
+     */
+    @Test
+    public void testKnightJump() {
+        ChessField field = this.chessBoard.getField(1, 1);
+        field.setPiece(new Knight(EnumChessColor.BLACK));
+        // Knight can jump here (piece of other color)
+        this.chessBoard.getField(2,3).setPiece(new Queen(EnumChessColor.WHITE));
+        // Knight cannot jump here (piece of same color)
+        this.chessBoard.getField(3,2).setPiece(new Queen(EnumChessColor.BLACK));
+
+        List<Coordinates> possibleNewFields = field.findPossibleNewFields();
+
+        List<Coordinates> expectedList = new ArrayList<>();
+        expectedList.add(new Coordinates(0, 3));
+        expectedList.add(new Coordinates(2, 3));
+        expectedList.add(new Coordinates(3, 0));
 
         Assertions.assertEquals(expectedList.size(), possibleNewFields.size());
         assertThat(possibleNewFields, containsInAnyOrder(expectedList.toArray()));

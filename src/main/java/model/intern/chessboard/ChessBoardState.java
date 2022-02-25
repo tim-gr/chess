@@ -29,7 +29,6 @@ public class ChessBoardState {
         this.moves = new ArrayList<>();
     }
 
-
     boolean hasTurn(EnumChessColor color) {
         return this.activeColor == color;
     }
