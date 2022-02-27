@@ -40,12 +40,10 @@ public class ChessBoard extends Observable implements Observer {
 
     /**
      * Sets all necessary pieces of a chess board on their starting positions.
-     * The current positions of the kings are tracked by the board state.
+     * The current positions of the kings are automatically tracked by the board state.
      */
     public void initChessPieces() {
         ChessPieceCreator.getInstance().initChessPieces(this);
-        this.boardState.changeFieldOfKing(EnumChessColor.WHITE, this.getField(4,0));
-        this.boardState.changeFieldOfKing(EnumChessColor.BLACK, this.getField(4,7));
     }
 
     /**
@@ -136,7 +134,7 @@ public class ChessBoard extends Observable implements Observer {
      */
     boolean canOwnPieceBeUsedForKingProtection(ChessField fieldKing, MovePath threateningMovePath) {
         for (ChessField chessField : threateningMovePath.getFieldsOnPath()) {
-            List<MovePath> moveDirectionsOwnPieces = chessField.findThreateningMoveDirections(fieldKing.getPiece().getColor());
+            List<MovePath> moveDirectionsOwnPieces = chessField.findThreateningMoveDirections(fieldKing.getPiece().getColor().getOtherColor());
             for (MovePath movePath : moveDirectionsOwnPieces) {
                 // The king cannot be protected by himself.
                 if (!movePath.getLastFieldOfPath().getCoordinates().equals(fieldKing.getCoordinates())) {
@@ -184,6 +182,13 @@ public class ChessBoard extends Observable implements Observer {
      */
     public void changeFieldOfKing(ChessField field) {
         this.boardState.changeFieldOfKing(field);
+    }
+
+    /**
+     * Returns the field of the king of the current player.
+     */
+    public ChessField getFieldOfKingActivePlayer() {
+        return this.boardState.getFieldOfKing();
     }
 
     /**
